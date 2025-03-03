@@ -10,7 +10,7 @@ export class BcryptHasher implements HashGenerator, HashComparer {
         return hash(plain, salt)
     }
 
-    compare(plain: string, hash: string): Promise<boolean> {
+    async compare(plain: string, hash: string): Promise<boolean> {
         return compare(plain, hash)
     }
 }
