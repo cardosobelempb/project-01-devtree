@@ -9,7 +9,14 @@ async function bootstrap(): Promise<void> {
     const configService = app.get<ConfigService<EnvType, true>>(ConfigService)
     const appPort = configService.get('APP_PORT', { infer: true })
     const prefixUrl = configService.get('PREFIX_URL', { infer: true })
+    const frontendUrl = configService.get('FRONTEND_URL', { infer: true })
 
+    app.enableCors({
+        origin: `${frontendUrl}`,
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
+    })
     app.setGlobalPrefix(prefixUrl)
     await app.listen(appPort)
 }
