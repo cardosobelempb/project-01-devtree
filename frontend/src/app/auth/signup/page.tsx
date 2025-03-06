@@ -1,11 +1,15 @@
 'use client'
 
-import { Brand } from "@/components/brand/brand";
-import ErrorMessage from "@/components/ErrorMessage";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import {useForm} from 'react-hook-form'
-import { z } from "zod";
+import { Brand } from '@/components/brand/brand'
+import ErrorMessage from '@/components/ErrorMessage'
+import { toatError, toatSuccess } from '@/components/show-toats'
+import { api } from '@/config/axios'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { AxiosResponse, isAxiosError } from 'axios'
+import Link from 'next/link'
+import { useForm } from 'react-hook-form'
+
+import { z } from 'zod'
 
 export namespace SignupPageProps {
     export const schema = z
@@ -26,19 +30,25 @@ export namespace SignupPageProps {
             path: ['passwordConfirmation'],
         })
 
-    export type Schema = z.infer<typeof schema>
-}
-
-export default function SignupPage(){
-
-    const initialValues: SignupPageProps.Schema = {
+    export const initialValues: SignupPageProps.Schema = {
         name: '',
         email: '',
         userName: '',
         password: '',
-        passwordConfirmation: ''
+        passwordConfirmation: '',
     }
 
+    export type Schema = z.infer<typeof schema>
+
+    export type FormData = Pick<
+        Schema,
+        'name' | 'email' | 'userName' | 'password'
+    >
+
+    export const resourceUrl = '/signup'
+}
+
+export default function SignupPage() {
     const {
         register,
         watch,
@@ -47,13 +57,28 @@ export default function SignupPage(){
         formState: { errors },
     } = useForm<SignupPageProps.Schema>({
         resolver: zodResolver(SignupPageProps.schema),
-        defaultValues: initialValues,
+        defaultValues: SignupPageProps.initialValues,
     })
 
-    console.log(errors)
+    watch('password')
 
-    const handleSignup = (data: SignupPageProps.Schema) => {
-        console.log(data)
+    const handleSignup = async (formData: SignupPageProps.FormData) => {
+        try {
+            const { data }: AxiosResponse<SignupPageProps.FormData> =
+                await api.post<SignupPageProps.FormData>(
+                    SignupPageProps.resourceUrl,
+                    formData,
+                )
+
+            toatSuccess({ message: 'Cadastro realizado com successo.' })
+            console.log(data)
+
+            reset()
+        } catch (error) {
+            if (isAxiosError(error) && error.response) {
+                toatError({ message: error.response.data?.message })
+            }
+        }
     }
 
     return (
@@ -78,9 +103,7 @@ export default function SignupPage(){
                         {...register('name')}
                     />
                     {errors.name && (
-                        <ErrorMessage>
-                            {errors.name?.message}
-                        </ErrorMessage>
+                        <ErrorMessage>{errors.name?.message}</ErrorMessage>
                     )}
                 </div>
                 <div className="grid grid-cols-1 space-y-3">
@@ -113,9 +136,7 @@ export default function SignupPage(){
                         {...register('userName')}
                     />
                     {errors.userName && (
-                        <ErrorMessage>
-                            {errors.userName?.message}
-                        </ErrorMessage>
+                        <ErrorMessage>{errors.userName?.message}</ErrorMessage>
                     )}
                 </div>
                 <div className="grid grid-cols-1 space-y-3">
@@ -133,9 +154,7 @@ export default function SignupPage(){
                         {...register('password')}
                     />
                     {errors.password && (
-                        <ErrorMessage>
-                            {errors.password?.message}
-                        </ErrorMessage>
+                        <ErrorMessage>{errors.password?.message}</ErrorMessage>
                     )}
                 </div>
 

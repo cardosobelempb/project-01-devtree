@@ -1,12 +1,4 @@
-import { cn } from '@/lib/utils'
 import type { Metadata } from 'next'
-
-import { Nunito } from 'next/font/google'
-const fontNunito = Nunito({
-    subsets: ['latin'],
-    variable: '--nunito',
-    weight: ['200', '300', '400', '500', '700', '800'],
-})
 
 export const metadata: Metadata = {
     title: 'Página | Registro',
@@ -19,15 +11,8 @@ export default function PageSignupLayout({
     children: React.ReactNode
 }>) {
     return (
-        <html lang="en">
-            <body
-                className={cn(
-                    'min-h-screen bg-slate-800 font-nunito antialiased',
-                    fontNunito.variable,
-                )}
-            >
-                {children}
-            </body>
-        </html>
+        <div className="min-h-screen bg-slate-800 font-nunito antialiased rounded-sm">
+            <main>{children}</main>
+        </div>
     )
 }
