@@ -23,7 +23,11 @@ export namespace SigninPageProps {
 
     export type Schema = z.infer<typeof schema>
 
-    export type FormData = Pick<Schema, 'email' | 'password'>
+    export type Request = Pick<Schema, 'email' | 'password'>
+
+    export type Response = {
+        access_token: string
+    }
 
     export const resourceUrl = '/auth/token'
 }
@@ -39,16 +43,15 @@ export default function SigninPage() {
         defaultValues: SigninPageProps.initialValues,
     })
 
-    const handleSignin = async (formData: SigninPageProps.FormData) => {
+    const handleSignin = async (
+        formData: SigninPageProps.Request,
+    ) => {
         try {
-            const { data }: AxiosResponse<SigninPageProps.FormData> =
-                await api.post<SigninPageProps.FormData>(
-                    SigninPageProps.resourceUrl,
-                    formData,
-                )
-
+            const { data }: AxiosResponse<SigninPageProps.Response> =
+                await api.post(SigninPageProps.resourceUrl, formData)
+            localStorage.setItem('AUTH_TOKEN', data.access_token)
             toatSuccess({ message: 'Login realizado com successo.' })
-            console.log(data)
+            console.log(data.access_token)
 
             reset()
         } catch (error) {

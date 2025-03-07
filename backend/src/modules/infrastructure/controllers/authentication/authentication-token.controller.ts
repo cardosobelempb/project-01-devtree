@@ -22,6 +22,10 @@ export namespace AuthenticationTokenProps {
     })
 
     export type Request = z.infer<typeof request>
+
+    export type Response = {
+        accessToken: string
+    }
 }
 
 @Controller('/auth/token')
