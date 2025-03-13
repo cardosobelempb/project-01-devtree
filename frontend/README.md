@@ -1,5 +1,9 @@
 ## start
 
+## tanstack query
+- npm i @tanstack/react-query
+- npm i @tanstack/react-query-devtools
+
 ## react-hook-form
 - npm install react-hook-form
 - npm install @hookform/resolvers
@@ -72,3 +76,8 @@
 - explorer.exe .
 - sudo apt update
 - sudo apt upgrade -y
+
+## auth
+
+- npm install next-auth
+- npm install @types/next-auth -D

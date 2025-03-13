@@ -3,7 +3,7 @@
 import { Brand } from '@/components/brand/brand'
 import ErrorMessage from '@/components/ErrorMessage'
 import { toatError, toatSuccess } from '@/components/show-toats'
-import { api } from '@/config/axios'
+import { api } from '@/lib/axios'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosResponse, isAxiosError } from 'axios'
 import Link from 'next/link'
@@ -32,7 +32,7 @@ export namespace SigninPageProps {
     export const resourceUrl = '/auth/token'
 }
 
-export default function SigninPage() {
+export default function SignInPage() {
     const {
         register,
         handleSubmit,
@@ -43,9 +43,8 @@ export default function SigninPage() {
         defaultValues: SigninPageProps.initialValues,
     })
 
-    const handleSignin = async (
-        formData: SigninPageProps.Request,
-    ) => {
+    const handleSignin = async (formData: SigninPageProps.Request) => {
+        console.log('handleSignin')
         try {
             const { data }: AxiosResponse<SigninPageProps.Response> =
                 await api.post(SigninPageProps.resourceUrl, formData)

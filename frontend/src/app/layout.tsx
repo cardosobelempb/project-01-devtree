@@ -2,9 +2,9 @@ import { cn } from '@/lib/utils'
 import type { Metadata } from 'next'
 import './globals.css'
 
-import { ThemeProvider } from 'next-themes'
+import { Providers } from '@/providers'
+import { } from '@radix-ui/react-tooltip'
 import { Nunito } from 'next/font/google'
-import { Toaster } from 'sonner'
 
 const fontNunito = Nunito({
     subsets: ['latin'],
@@ -21,6 +21,7 @@ export default function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode
+
 }>) {
     return (
         <html lang="en" suppressHydrationWarning={true}>
@@ -30,15 +31,11 @@ export default function RootLayout({
                     fontNunito.variable,
                 )}
             >
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                >
-                    {children}
-                    <Toaster richColors position='top-right'/>
-                </ThemeProvider>
+                <>
+                    <Providers>
+                        {children}
+                    </Providers>
+                </>
             </body>
         </html>
     )

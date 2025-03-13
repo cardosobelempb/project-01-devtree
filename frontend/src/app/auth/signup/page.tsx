@@ -3,7 +3,7 @@
 import { Brand } from '@/components/brand/brand'
 import ErrorMessage from '@/components/ErrorMessage'
 import { toatError, toatSuccess } from '@/components/show-toats'
-import { api } from '@/config/axios'
+import { api } from '@/lib/axios'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosResponse, isAxiosError } from 'axios'
 import Link from 'next/link'

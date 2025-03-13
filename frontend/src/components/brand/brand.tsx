@@ -4,29 +4,37 @@ import Link from 'next/link'
 
 type BradProps = {
     link?: string
-    isLink?: boolean
 }
 
-export const Brand: React.FC<BradProps> = ({ link, isLink }) => {
-    return isLink ? (
-        <Link href={`/${link}`} className="flex place-self-center">
+export const Brand: React.FC<BradProps> = ({ link }) => {
+    return link ? (
+        <Link
+            href={`/${link}`}
+            className="flex place-self-center"
+        >
             <Image
-                width={472}
-                height={103}
+                // layout="fill"
+                // objectFit="cover"
                 src={BrabdImg}
                 alt=""
                 priority
-                className=""
+                width="0"
+                height="0"
+                sizes="100vw"
+                style={{ width: '100%', height: 'auto' }}
             />
         </Link>
     ) : (
         <Image
-            width={472}
-            height={103}
+            // layout="fill"
+            // objectFit="cover"
             src={BrabdImg}
             alt=""
             priority
-            className=""
+            width="0"
+            height="0"
+            sizes="100vw"
+            style={{ width: '100%', height: 'auto' }}
         />
     )
 }
