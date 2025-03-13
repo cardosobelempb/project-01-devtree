@@ -8,10 +8,16 @@ import { DatabaseModule } from './database.module'
 import { UserPrismaRepository } from './enterprise/repositories/prima-repository/user-prisma.repository'
 import { UserFindByIdController } from './infrastructure/controllers/user/find-by-id/user-find-by-id.constroller'
 import { UserSignupController } from './infrastructure/controllers/user/signup/user-signup.controller'
+import { UserMeController } from './infrastructure/controllers/user/user-profile/user-me.controller'
+import { UserMeService } from './application/use-cases/user/user-me/user-me.service'
 
 @Module({
     imports: [DatabaseModule, CryptographyModule],
-    controllers: [UserSignupController, UserFindByIdController],
+    controllers: [
+        UserSignupController,
+        UserFindByIdController,
+        UserMeController,
+    ],
     providers: [
         {
             provide: UserSignupUseCase,
@@ -27,6 +33,13 @@ import { UserSignupController } from './infrastructure/controllers/user/signup/u
             provide: UserFindByIdUseCase,
             useFactory: (userPrismaRepository: UserPrismaRepository) => {
                 return new UserFindByIdUseCase(userPrismaRepository)
+            },
+            inject: [UserPrismaRepository],
+        },
+        {
+            provide: UserMeService,
+            useFactory: (userPrismaRepository: UserPrismaRepository) => {
+                return new UserMeService(userPrismaRepository)
             },
             inject: [UserPrismaRepository],
         },

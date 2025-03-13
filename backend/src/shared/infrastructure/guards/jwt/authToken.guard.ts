@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Request } from 'express'
-import { Observable } from 'rxjs'
 
 export class AuthTokenGuard implements CanActivate {
     constructor(private readonly jwtService: JwtService) {}

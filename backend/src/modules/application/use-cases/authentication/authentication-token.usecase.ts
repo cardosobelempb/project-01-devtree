@@ -34,10 +34,12 @@ export class AuthenticationTokenUseCase {
         if (!user) {
             return left(new WrongCredentialsError())
         }
+
         const isPasswordValid = await this.hashComparer.compare(
             password,
             user.password,
         )
+
         if (!isPasswordValid) {
             return left(new WrongCredentialsError())
         }

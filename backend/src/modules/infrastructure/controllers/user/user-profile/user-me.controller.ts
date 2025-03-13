@@ -1,22 +1,19 @@
-import { ResourceNotFoundError } from '@/modules/application/use-cases/errors/resource-not-found.erro'
-import { UserFindByIdUseCase } from '@/modules/application/use-cases/user/find-by-id/user-find-by-id.usecase'
+import { UserMeService } from '@/modules/application/use-cases/user/user-me/user-me.service'
 import { UserEntity } from '@/modules/enterprise/entities/user.entity'
 import { UserPresenter } from '@/modules/infrastructure/presenters/user.presenter'
-import { right } from '@/shared/handle-erros/either'
+import { JwtPayloadInfer } from '@/shared/infrastructure/guards/jwt/jwt.strategy'
 import { UserInLoggaed } from '@/shared/infrastructure/guards/jwt/user-in-logged.decorator'
 import { ZodValidationPipe } from '@/shared/infrastructure/pipes/zod-validation.pipe'
 import {
     BadRequestException,
-    ConflictException,
     Controller,
     Get,
     HttpCode,
     HttpStatus,
-    Param,
 } from '@nestjs/common'
 import { z } from 'zod'
 
-export namespace UserFindByIdProps {
+export namespace UserMeProps {
     const schema = z.object({
         userId: z.string().uuid('Error 404 Not Found id doesn’t exist'),
     })
@@ -30,19 +27,19 @@ export namespace UserFindByIdProps {
     }
 }
 
-@Controller('users/:userId')
-export class UserFindByIdController {
-    constructor(private readonly userFindByIdUseCase: UserFindByIdUseCase) {}
+@Controller('me')
+export class UserMeController {
+    constructor(private readonly userMeService: UserMeService) {}
 
     @HttpCode(HttpStatus.OK)
     @Get()
-    async handle(
-        @Param(UserFindByIdProps.request)
-        { userId }: UserFindByIdProps.Request,
-    ) {
-        const result = await this.userFindByIdUseCase.execute({
+    async handle(@UserInLoggaed() user: JwtPayloadInfer) {
+        const userId = user.sub
+        // console.log(user)
+        const result = await this.userMeService.execute({
             userId,
         })
+        // console.log('Result =>', result.value)
 
         if (result.isLeft()) {
             throw new BadRequestException()
