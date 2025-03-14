@@ -1,5 +1,5 @@
 import { ResourceNotFoundError } from '@/modules/application/use-cases/errors/resource-not-found.erro'
-import { UserFindByIdUseCase } from '@/modules/application/use-cases/user/find-by-id/user-find-by-id.usecase'
+import { UserFindByIdService } from '@/modules/application/use-cases/user/find-by-id/user-find-by-id.service'
 import { UserEntity } from '@/modules/enterprise/entities/user.entity'
 import { UserPresenter } from '@/modules/infrastructure/presenters/user.presenter'
 import { right } from '@/shared/handle-erros/either'
@@ -32,7 +32,7 @@ export namespace UserFindByIdProps {
 
 @Controller('users/:userId')
 export class UserFindByIdController {
-    constructor(private readonly userFindByIdUseCase: UserFindByIdUseCase) {}
+    constructor(private readonly userFindByIdService: UserFindByIdService) {}
 
     @HttpCode(HttpStatus.OK)
     @Get()
@@ -40,7 +40,7 @@ export class UserFindByIdController {
         @Param(UserFindByIdProps.request)
         { userId }: UserFindByIdProps.Request,
     ) {
-        const result = await this.userFindByIdUseCase.execute({
+        const result = await this.userFindByIdService.execute({
             userId,
         })
 

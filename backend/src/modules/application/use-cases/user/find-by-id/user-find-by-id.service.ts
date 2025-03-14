@@ -11,7 +11,7 @@ export namespace UserFindByIdProps {
     export type Response = Either<ResourceNotFoundError, { user: UserEntity }>
 }
 
-export class UserFindByIdUseCase {
+export class UserFindByIdService {
     constructor(private userPrismaRepository: UserPrismaRepository) {}
 
     async execute({

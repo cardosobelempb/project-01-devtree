@@ -1,5 +1,6 @@
 'use client'
 
+import { AuthPrivate } from '@/components/auth-private/auth-private'
 import { ReactNode } from 'react'
 import { z } from 'zod'
 
@@ -28,9 +29,11 @@ export namespace PageProfileProps {
 export default function PageProfile({children}: PageProfileProps.Response) {
     return (
         <>
-            {children}
-            <h1>PageProfile</h1>
+            <AuthPrivate>
+                {children}
+            </AuthPrivate>
         </>
     )
 }
 
+/*17857765414*/

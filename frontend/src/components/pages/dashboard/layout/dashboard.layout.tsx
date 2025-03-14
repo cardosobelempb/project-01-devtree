@@ -2,6 +2,7 @@
 
 import { UserMeProps } from '@/services/user/user-me.service'
 import { ReactNode } from 'react'
+import { DashboardHeader } from '../dahsboard-header'
 
 export namespace DashboardLayoutProps {
     export type Request = {
@@ -25,10 +26,14 @@ export namespace DashboardLayoutProps {
     export const resourceUrl = '/auth/token'
 }
 
-export default function DashboardLayout({ children}: DashboardLayoutProps.Props) {
+export default function DashboardLayout({ data }: DashboardLayoutProps.Props) {
+    console.log()
     return (
         <>
-            {children}
+            <DashboardHeader/>
+
+            <h1>Dashboard Layout email = {data.user.email}</h1>
+
         </>
     )
 }

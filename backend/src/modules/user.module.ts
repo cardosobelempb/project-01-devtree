@@ -1,7 +1,7 @@
 import { HashGenerator } from '@/shared/application/providers/cryptography/hash-generator'
 import { Module } from '@nestjs/common'
 import { BcryptHasher } from './application/providers/cryptography/bcrypt-hasher.provider'
-import { UserFindByIdUseCase } from './application/use-cases/user/find-by-id/user-find-by-id.usecase'
+import { UserFindByIdService } from './application/use-cases/user/find-by-id/user-find-by-id.service'
 import { UserSignupUseCase } from './application/use-cases/user/signup/user-signup.usecase'
 import { CryptographyModule } from './cryptography.module'
 import { DatabaseModule } from './database.module'
@@ -30,9 +30,9 @@ import { UserMeService } from './application/use-cases/user/user-me/user-me.serv
             inject: [HashGenerator, UserPrismaRepository],
         },
         {
-            provide: UserFindByIdUseCase,
+            provide: UserFindByIdService,
             useFactory: (userPrismaRepository: UserPrismaRepository) => {
-                return new UserFindByIdUseCase(userPrismaRepository)
+                return new UserFindByIdService(userPrismaRepository)
             },
             inject: [UserPrismaRepository],
         },

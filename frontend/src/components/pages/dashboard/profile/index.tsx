@@ -19,16 +19,20 @@ export namespace DashboardProfileProps {
     }
 
     export type Props = {
-        data: UserMeProps.Response
+        data:{
+            user: UserMeProps.Response
+        }
     }
 
     export const resourceUrl = '/auth/token'
 }
 
-export const DashboardProfile: React.FC<DashboardProfileProps.Props> = ({data}) => {
+export const DashboardProfile: React.FC<DashboardProfileProps.Props> = (
+    {data}
+) => {
     return (
         <>
-            <DashboardLayout data={data}>
+            <DashboardLayout data={data.user}>
                 <DashboardHeader />
                 <h1>DashboardProfile</h1>
             </DashboardLayout>
